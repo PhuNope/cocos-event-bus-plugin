@@ -1,0 +1,39 @@
+{
+  "$schema": "./@types/schema/package/index.json",
+  "package_version": 2,
+  "name": "event-bus",
+  "version": "1.0.0",
+  "author": "PhuNope",
+  "editor": ">=3.8.2",
+  "scripts": {
+    "preinstall": "node ./scripts/preinstall.js",
+    "build": "tsc"
+  },
+  "description": "i18n:vue3-template.description",
+  "main": "./dist/main.js",
+  "dependencies": {
+    "fs-extra": "^10.0.0",
+    "vue": "^3.1.4"
+  },
+  "devDependencies": {
+    "@cocos/creator-types": "^3.8.2",
+    "@types/fs-extra": "^9.0.5",
+    "@types/node": "^18.17.1",
+    "typescript": "^6.0.3"
+  },
+  "contributions": {
+    "asset-db": {
+      "mount": {
+        "path": "./assets",
+        "readonly": true
+      }
+    },
+    "inspector": {
+      "section": {
+        "node": {
+          "LocalizedText": "./dist/contributions/inspector/comp-localized.js"
+        }
+      }
+    }
+  }
+}
