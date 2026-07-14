@@ -1,6 +1,7 @@
-import { GameEvent } from './GameEvent';
-import { SubscriberPriority } from './SubscriberPriority';
-import { BindingInfo } from './BindingInfo';
+import { js } from "cc";
+import { GameEvent } from "./GameEvent";
+import { SubscriberPriority } from "./SubscriberPriority";
+import { BindingInfo } from "./BindingInfo";
 
 export class GameEventsHelper {
     static getEventBindingKey(eventOrType: GameEvent | { new(...args: any[]): GameEvent } | string): string {
@@ -8,13 +9,13 @@ export class GameEventsHelper {
             return eventOrType;
         }
         if (typeof eventOrType === 'function') {
-            return eventOrType.name;
+            return js.getClassId(eventOrType) || eventOrType.name;
         }
-        return eventOrType.constructor.name;
+        return js.getClassId(eventOrType.constructor) || eventOrType.constructor.name;
     }
 
     static getEventName(eventClass: { new(...args: any[]): GameEvent } | string): string {
-        if (typeof eventClass === 'string') {
+        if (typeof eventClass === "string") {
             return eventClass;
         }
         return eventClass.name;

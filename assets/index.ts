@@ -4,11 +4,12 @@ export { GameEventHub, BindingInfo, DynamicSubscriberBindingInfo, StaticSubscrib
 export { GameEventHubComponent } from './core/GameEventHubComponent';
 export { SubscriberPriority } from './core/SubscriberPriority';
 export { PropagationResult } from './core/PropagationResult';
-export { ISubscriberFilter } from './core/ISubscriberFilter';
+export type { ISubscriberFilter } from './core/ISubscriberFilter';
 export { GameEventsHelper } from './core/GameEventsHelper';
 
 // ── Decorators ───────────────────────────────────────────────
-export { OnGameEvent, getOnGameEventEntries, OnGameEventEntry } from './decorators/OnGameEvent';
+export { OnGameEvent, getOnGameEventEntries } from './decorators/OnGameEvent';
+export type { OnGameEventEntry } from './decorators/OnGameEvent';
 export { DefaultChannel, getDefaultChannel } from './decorators/DefaultChannel';
 export { SystemEvent } from './decorators/SystemEvent';
 

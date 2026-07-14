@@ -1,44 +1,32 @@
-import { GameEvent } from '../core/GameEvent';
-import { ISubscriberFilter } from '../core/ISubscriberFilter';
+import { _decorator, Component, EventHandler, js } from "cc";
+import { GameEventHub } from "../core/GameEventHub";
 
-export class GameEventAsset {
-    public gameEvent: GameEvent | null = null;
-    public channel: string = '';
-    public shared: boolean = false;
-    public nonCancellable: boolean = false;
-    public filters: ISubscriberFilter[] | null = null;
+const { ccclass, property } = _decorator;
 
-    initialize(gameEvent: GameEvent): void {
-        this.gameEvent = gameEvent.copyEvent();
-    }
+@ccclass("GameEventAsset")
+export class GameEventAsset extends Component {
+    @property
+    public className: string = "";
 
-    feedEventProperties(): void {
-        if (!this.gameEvent) return;
+    @property({ type: [EventHandler] })
+    private eventHandlers: [EventHandler] = [];
 
-        this.gameEvent.setChannel(this.channel);
-        this.gameEvent.setEmitter(this);
+    private unsub: () => void;
 
-        if (this.shared) {
-            this.gameEvent.sharedFlag();
-        } else {
-            this.gameEvent.unique();
+    protected onEnable() {
+        const classCon = js.getClassByName(this.className);
+
+        if (!classCon) {
+            console.log(`Cant find class ${this.className}`);
+            return;
         }
 
-        if (this.nonCancellable) {
-            this.gameEvent.nonCancellableFlag();
-        } else {
-            this.gameEvent.cancellable();
-        }
-
-        this.gameEvent.withFilters(this.filters);
+        this.unsub = GameEventHub.listen(classCon as any, this, event => {
+            EventHandler.emitEvents(this.eventHandlers, event);
+        });
     }
 
-    publish(emitter?: any): void {
-        this.feedEventProperties();
-        this.gameEvent!.publish(emitter ?? this);
-    }
-
-    toString(): string {
-        return this.gameEvent?.constructor?.name ?? 'GameEventAsset';
+    protected onDisable() {
+        this.unsub?.();
     }
 }
